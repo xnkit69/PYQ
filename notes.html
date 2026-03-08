@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MSBTE Diploma Notes — All Subjects</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #333;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a237e, #283593);
+      color: #fff;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,.3);
+    }
+    .logo { display: flex; align-items: center; gap: 14px; }
+    .logo-icon { font-size: 2.4rem; }
+    .logo-text h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: .5px; }
+    .logo-text p  { font-size: .85rem; opacity: .8; }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 24px;
+      font-size: .95rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: background .2s;
+    }
+    nav a:hover, nav a.active { background: rgba(255,255,255,.18); }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #e65100, #ff6f00);
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px 50px;
+    }
+    .hero h2 { font-size: 2rem; margin-bottom: 10px; }
+    .hero p  { font-size: 1.05rem; opacity: .9; margin-bottom: 28px; }
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 30px 0 0 30px;
+      font-size: 1rem;
+      outline: none;
+    }
+    .search-bar button {
+      padding: 12px 24px;
+      background: #1a237e;
+      color: #fff;
+      border: none;
+      border-radius: 0 30px 30px 0;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background .2s;
+    }
+    .search-bar button:hover { background: #283593; }
+
+    /* ── Stats bar ── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      background: #fff;
+      padding: 18px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .stat { text-align: center; }
+    .stat span { display: block; font-size: 1.5rem; font-weight: 700; color: #e65100; }
+    .stat small { font-size: .8rem; color: #666; }
+
+    /* ── Sections ── */
+    .section { padding: 40px 40px; }
+    .section-title {
+      font-size: 1.4rem;
+      color: #e65100;
+      margin-bottom: 24px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid #ff6f00;
+      display: inline-block;
+    }
+
+    /* ── Branch tabs ── */
+    .tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+    .tab {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 2px solid #e65100;
+      background: #fff;
+      color: #e65100;
+      cursor: pointer;
+      font-size: .9rem;
+      transition: all .2s;
+    }
+    .tab:hover, .tab.active { background: #e65100; color: #fff; }
+
+    /* ── Subject accordion ── */
+    .branch-block {
+      background: #fff;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.08);
+      overflow: hidden;
+    }
+    .branch-header {
+      padding: 18px 24px;
+      background: linear-gradient(90deg, #1a237e, #3949ab);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .branch-header .branch-icon { font-size: 1.8rem; }
+    .branch-header h3 { font-size: 1.1rem; flex: 1; }
+    .branch-header .chevron { font-size: 1.2rem; transition: transform .3s; }
+    .branch-header.open .chevron { transform: rotate(180deg); }
+    .branch-body {
+      display: none;
+      padding: 20px 24px;
+    }
+    .branch-body.open { display: block; }
+
+    /* ── Notes grid ── */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .note-card {
+      border: 2px solid #e8eaf6;
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .note-card:hover { border-color: #3949ab; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .note-card .note-icon { font-size: 2rem; margin-bottom: 8px; }
+    .note-card h4 { font-size: .95rem; color: #1a237e; margin-bottom: 4px; line-height: 1.3; }
+    .note-card .sem  { font-size: .78rem; color: #666; margin-bottom: 10px; }
+    .note-card .note-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn {
+      padding: 7px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 600;
+      transition: opacity .2s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-dl { background: #1a237e; color: #fff; }
+    .btn-view { background: #e8eaf6; color: #1a237e; }
+
+    /* ── Info box ── */
+    .info-box {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      font-size: .9rem;
+      color: #555;
+    }
+    .info-box strong { color: #e65100; }
+
+    /* ── PYQ link banner ── */
+    .pyq-banner {
+      margin: 0 40px 40px;
+      background: linear-gradient(135deg, #1a237e, #3949ab);
+      color: #fff;
+      border-radius: 14px;
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .pyq-banner h3 { font-size: 1.3rem; }
+    .pyq-banner p  { font-size: .9rem; opacity: .9; margin-top: 4px; }
+    .btn-white {
+      padding: 10px 28px;
+      background: #fff;
+      color: #1a237e;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .95rem;
+      white-space: nowrap;
+      transition: box-shadow .2s;
+    }
+    .btn-white:hover { box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 32px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+      animation: popIn .25s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(.85); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .modal-icon { font-size: 3rem; margin-bottom: 12px; }
+    .modal h3 { font-size: 1.2rem; color: #1a237e; margin-bottom: 6px; }
+    .modal p  { font-size: .9rem; color: #555; margin-bottom: 18px; }
+    .modal input[type="password"] {
+      width: 100%;
+      padding: 11px 16px;
+      border: 2px solid #c5cae9;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: 8px;
+    }
+    .modal input[type="password"]:focus { border-color: #3949ab; }
+    .modal-error { color: #c62828; font-size: .85rem; min-height: 20px; margin-bottom: 10px; }
+    .modal-btns { display: flex; gap: 10px; margin-top: 6px; }
+    .modal-btns button {
+      flex: 1;
+      padding: 11px 0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .95rem;
+    }
+    #modalConfirm { background: #1a237e; color: #fff; }
+    #modalCancel  { background: #e8eaf6; color: #1a237e; }
+
+    /* ── Footer ── */
+    footer {
+      background: #1a237e;
+      color: rgba(255,255,255,.75);
+      text-align: center;
+      padding: 24px 20px;
+      font-size: .85rem;
+    }
+    footer a { color: #90caf9; text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .section { padding: 30px 18px; }
+      .pyq-banner { margin: 0 18px 30px; padding: 20px; }
+      nav a { margin-left: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header>
+  <div class="logo">
+    <span class="logo-icon">📝</span>
+    <div class="logo-text">
+      <h1>MSBTE Diploma Notes</h1>
+      <p>All Subjects — All Semesters</p>
+    </div>
+  </div>
+  <nav>
+    <a href="index.html">🏠 Library</a>
+    <a href="notes.html" class="active">📝 Notes</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<div class="hero">
+  <h2>MSBTE Diploma Notes — All Subjects</h2>
+  <p>Comprehensive notes for Computer, Civil, Mechanical, Electrical, Electronics &amp; more</p>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search subjects, topics…" oninput="filterNotes()" />
+    <button onclick="filterNotes()">🔍 Search</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ STATS ═══════════════════════════════ -->
+<div class="stats">
+  <div class="stat"><span>6+</span><small>Branches Covered</small></div>
+  <div class="stat"><span>50+</span><small>Subjects</small></div>
+  <div class="stat"><span>6</span><small>Semesters</small></div>
+  <div class="stat"><span>Free</span><small>For All Students</small></div>
+</div>
+
+<!-- ═══════════════════════════════ NOTES SECTION ═══════════════════════ -->
+<div class="section">
+  <h2 class="section-title">📚 Diploma Notes by Branch</h2>
+
+  <div class="info-box">
+    <strong>📌 Note:</strong> All notes are for study and research purposes only.
+    A password is required to download any file. Enter the password when prompted to access your notes.
+  </div>
+
+  <!-- Branch tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="filterBranch('all', this)">All Branches</button>
+    <button class="tab" onclick="filterBranch('computer', this)">💻 Computer</button>
+    <button class="tab" onclick="filterBranch('civil', this)">🏗 Civil</button>
+    <button class="tab" onclick="filterBranch('mechanical', this)">⚙️ Mechanical</button>
+    <button class="tab" onclick="filterBranch('electrical', this)">⚡ Electrical</button>
+    <button class="tab" onclick="filterBranch('electronics', this)">📡 Electronics</button>
+    <button class="tab" onclick="filterBranch('common', this)">📖 Common</button>
+  </div>
+
+  <!-- ────────────────── COMMON SUBJECTS ────────────────── -->
+  <div class="branch-block" data-branch="common">
+    <div class="branch-header" onclick="toggleBranch(this)">
+      <span class="branch-icon">📖</span>
+      <h3>Common Subjects (All Branches)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="branch-body open">
+      <div class="notes-grid">
+
+        <div class="note-card" data-title="applied mathematics maths">
+          <div class="note-icon">🔢</div>
+          <h4>Applied Mathematics</h4>
+          <p class="sem">Semester 1 &amp; 2 | All Branches</p>
+          <div class="note-actions">
+            <button class="btn btn-dl"   onclick="secureDownload('Maths/Maths(S-24).pdf','Maths_S24.pdf')">⬇ S-24</button>
+            <button class="btn btn-dl"   onclick="secureDownload('Maths/Maths(W-24).pdf','Maths_W24.pdf')">⬇ W-24</button>
+            <button class="btn btn-view" onclick="secureView('Maths/Maths(S-24).pdf')">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="english communication skills">
+          <div class="note-icon">📝</div>
+          <h4>English &amp; Communication Skills</h4>
+          <p class="sem">Semester 1 &amp; 2 | All Branches</p>
+          <div class="note-actions">
+            <button class="btn btn-dl"   onclick="secureDownload('English/Eng(S-24).pdf','Eng_S24.pdf')">⬇ S-24</button>
+            <button class="btn btn-dl"   onclick="secureDownload('English/Eng(W-24).pdf','Eng_W24.pdf')">⬇ W-24</button>
+            <button class="btn btn-view" onclick="secureView('English/Eng(S-24).pdf')">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="basic science physics chemistry">
+          <div class="note-icon">🔬</div>
+          <h4>Basic Science (Physics &amp; Chemistry)</h4>
+          <p class="sem">Semester 1 | All Branches</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="environmental studies">
+          <div class="note-icon">🌱</div>
+          <h4>Environmental Studies</h4>
+          <p class="sem">Semester 3 | All Branches</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="industrial management entrepreneurship">
+          <div class="note-icon">💼</div>
+          <h4>Industrial Management &amp; Entrepreneurship</h4>
+          <p class="sem">Semester 5 / 6 | All Branches</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────── COMPUTER ENGINEERING ────────────────── -->
+  <div class="branch-block" data-branch="computer">
+    <div class="branch-header" onclick="toggleBranch(this)">
+      <span class="branch-icon">💻</span>
+      <h3>Computer Engineering</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="branch-body open">
+      <div class="notes-grid">
+
+        <div class="note-card" data-title="programming in c basics">
+          <div class="note-icon">🖥️</div>
+          <h4>Programming in C</h4>
+          <p class="sem">Semester 1 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="data structures using c">
+          <div class="note-icon">📊</div>
+          <h4>Data Structures Using C</h4>
+          <p class="sem">Semester 3 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="object oriented programming oop java">
+          <div class="note-icon">☕</div>
+          <h4>Object Oriented Programming (Java)</h4>
+          <p class="sem">Semester 4 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="database management system dbms sql">
+          <div class="note-icon">🗄️</div>
+          <h4>Database Management System (DBMS)</h4>
+          <p class="sem">Semester 4 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="computer network networking">
+          <div class="note-icon">🌐</div>
+          <h4>Computer Networks</h4>
+          <p class="sem">Semester 5 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="web technology html css javascript">
+          <div class="note-icon">🌍</div>
+          <h4>Web Technology</h4>
+          <p class="sem">Semester 5 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="operating system os linux">
+          <div class="note-icon">🖱️</div>
+          <h4>Operating System</h4>
+          <p class="sem">Semester 3 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="software engineering project management">
+          <div class="note-icon">📋</div>
+          <h4>Software Engineering</h4>
+          <p class="sem">Semester 5 | CO / IF</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────── CIVIL ENGINEERING ────────────────── -->
+  <div class="branch-block" data-branch="civil">
+    <div class="branch-header" onclick="toggleBranch(this)">
+      <span class="branch-icon">🏗</span>
+      <h3>Civil Engineering</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="branch-body open">
+      <div class="notes-grid">
+
+        <div class="note-card" data-title="engineering drawing civil drafting">
+          <div class="note-icon">📐</div>
+          <h4>Engineering Drawing</h4>
+          <p class="sem">Semester 1 | CE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="surveying civil measurement">
+          <div class="note-icon">🗺️</div>
+          <h4>Surveying</h4>
+          <p class="sem">Semester 2 | CE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="strength of materials som civil">
+          <div class="note-icon">🏛️</div>
+          <h4>Strength of Materials</h4>
+          <p class="sem">Semester 3 | CE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="concrete technology rcc design">
+          <div class="note-icon">🧱</div>
+          <h4>Concrete Technology &amp; RCC Design</h4>
+          <p class="sem">Semester 4 | CE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="construction management estimation costing civil">
+          <div class="note-icon">📊</div>
+          <h4>Estimation, Costing &amp; Valuation</h4>
+          <p class="sem">Semester 5 | CE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="water supply sanitary engineering civil">
+          <div class="note-icon">💧</div>
+          <h4>Water Supply &amp; Sanitary Engineering</h4>
+          <p class="sem">Semester 5 | CE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────── MECHANICAL ENGINEERING ────────────────── -->
+  <div class="branch-block" data-branch="mechanical">
+    <div class="branch-header" onclick="toggleBranch(this)">
+      <span class="branch-icon">⚙️</span>
+      <h3>Mechanical Engineering</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="branch-body open">
+      <div class="notes-grid">
+
+        <div class="note-card" data-title="engineering drawing mechanical drafting">
+          <div class="note-icon">📐</div>
+          <h4>Engineering Drawing</h4>
+          <p class="sem">Semester 1 | ME</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="workshop technology manufacturing processes">
+          <div class="note-icon">🔧</div>
+          <h4>Workshop Technology</h4>
+          <p class="sem">Semester 2 | ME</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="thermodynamics heat transfer mechanical">
+          <div class="note-icon">🔥</div>
+          <h4>Thermodynamics</h4>
+          <p class="sem">Semester 3 | ME</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="machine design theory of machines tom">
+          <div class="note-icon">⚙️</div>
+          <h4>Theory of Machines</h4>
+          <p class="sem">Semester 4 | ME</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="fluid mechanics hydraulics machines mechanical">
+          <div class="note-icon">💧</div>
+          <h4>Fluid Mechanics &amp; Hydraulic Machines</h4>
+          <p class="sem">Semester 4 | ME</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="production technology cnc manufacturing">
+          <div class="note-icon">🏭</div>
+          <h4>Production Technology</h4>
+          <p class="sem">Semester 5 | ME</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────── ELECTRICAL ENGINEERING ────────────────── -->
+  <div class="branch-block" data-branch="electrical">
+    <div class="branch-header" onclick="toggleBranch(this)">
+      <span class="branch-icon">⚡</span>
+      <h3>Electrical Engineering</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="branch-body open">
+      <div class="notes-grid">
+
+        <div class="note-card" data-title="basic electrical engineering bee circuits">
+          <div class="note-icon">🔌</div>
+          <h4>Basic Electrical Engineering</h4>
+          <p class="sem">Semester 1 | EE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="electrical circuits dc ac networks">
+          <div class="note-icon">⚡</div>
+          <h4>Electrical Circuits</h4>
+          <p class="sem">Semester 2 | EE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="electrical machines motors transformers generators">
+          <div class="note-icon">🔋</div>
+          <h4>Electrical Machines</h4>
+          <p class="sem">Semester 3 | EE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="power electronics drives thyristor">
+          <div class="note-icon">🔆</div>
+          <h4>Power Electronics &amp; Drives</h4>
+          <p class="sem">Semester 5 | EE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="electrical installation wiring maintenance">
+          <div class="note-icon">🛠️</div>
+          <h4>Electrical Installation &amp; Maintenance</h4>
+          <p class="sem">Semester 4 | EE</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────── ELECTRONICS & TELECOMMUNICATION ────────────────── -->
+  <div class="branch-block" data-branch="electronics">
+    <div class="branch-header" onclick="toggleBranch(this)">
+      <span class="branch-icon">📡</span>
+      <h3>Electronics &amp; Telecommunication Engineering</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="branch-body open">
+      <div class="notes-grid">
+
+        <div class="note-card" data-title="basic electronics diode transistor circuits">
+          <div class="note-icon">🔬</div>
+          <h4>Basic Electronics</h4>
+          <p class="sem">Semester 1 | EJ</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="digital electronics logic gates flip flop">
+          <div class="note-icon">🔢</div>
+          <h4>Digital Electronics</h4>
+          <p class="sem">Semester 3 | EJ</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="microcontroller microprocessor 8051 8085">
+          <div class="note-icon">🖥️</div>
+          <h4>Microcontroller &amp; Applications</h4>
+          <p class="sem">Semester 4 | EJ</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="communication systems analog digital modulation">
+          <div class="note-icon">📻</div>
+          <h4>Communication Systems</h4>
+          <p class="sem">Semester 4 | EJ</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="linear integrated circuits opamp ic">
+          <div class="note-icon">🔩</div>
+          <h4>Linear Integrated Circuits</h4>
+          <p class="sem">Semester 5 | EJ</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+        <div class="note-card" data-title="embedded systems iot internet of things">
+          <div class="note-icon">📲</div>
+          <h4>Embedded Systems &amp; IoT</h4>
+          <p class="sem">Semester 5 | EJ</p>
+          <div class="note-actions">
+            <button class="btn btn-dl" onclick="showComingSoon()">⬇ Download</button>
+            <button class="btn btn-view" onclick="showComingSoon()">👁 View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /section -->
+
+<!-- ═══════════════════════════════ PYQ BANNER ═══════════════════════════ -->
+<div class="pyq-banner">
+  <div>
+    <h3>📄 Previous Year Question Papers</h3>
+    <p>Download PYQ papers for English and Maths — Summer &amp; Winter exams</p>
+  </div>
+  <a href="index.html" class="btn-white">Go to Library →</a>
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <p>© 2024 MSBTE Online Library &nbsp;|&nbsp; For Study &amp; Research Purpose Only</p>
+  <p style="margin-top:6px;">Made with ❤️ for Diploma Students &nbsp;|&nbsp; <a href="index.html">Library Home</a></p>
+</footer>
+
+<!-- ═══════════════════════════════ PASSWORD MODAL ═══════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon">🔐</div>
+    <h3>Download Protected</h3>
+    <p>Enter the password to download this file</p>
+    <input type="password" id="pwdInput" placeholder="Enter password…" onkeydown="if(event.key==='Enter') confirmDownload()" />
+    <div class="modal-error" id="modalError"></div>
+    <div class="modal-btns">
+      <button id="modalCancel" onclick="closeModal()">Cancel</button>
+      <button id="modalConfirm" onclick="confirmDownload()">Download</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ COMING SOON MODAL ═══════════════════ -->
+<div class="modal-overlay" id="soonOverlay" onclick="this.classList.remove('show')">
+  <div class="modal">
+    <div class="modal-icon">🚧</div>
+    <h3>Coming Soon</h3>
+    <p>This note/file will be uploaded soon. Check back later or visit our Library for available PYQ papers.</p>
+    <div class="modal-btns">
+      <button style="background:#e65100;color:#fff;flex:1;padding:11px;border:none;border-radius:8px;cursor:pointer;font-weight:700;"
+              onclick="document.getElementById('soonOverlay').classList.remove('show')">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── Password-protected download logic ── */
+  const CORRECT_PASSWORD = 'ankit';
+  let pendingUrl  = '';
+  let pendingName = '';
+  let pendingView = false;
+
+  function secureDownload(url, filename) {
+    pendingUrl  = url;
+    pendingName = filename;
+    pendingView = false;
+    openModal();
+  }
+
+  function secureView(url) {
+    pendingUrl  = url;
+    pendingName = '';
+    pendingView = true;
+    openModal();
+  }
+
+  function openModal() {
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('modalError').textContent = '';
+    document.getElementById('modalOverlay').classList.add('show');
+    setTimeout(() => document.getElementById('pwdInput').focus(), 100);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('show');
+    pendingUrl  = '';
+    pendingName = '';
+    pendingView = false;
+  }
+
+  function confirmDownload() {
+    const pwd = document.getElementById('pwdInput').value;
+    if (pwd !== CORRECT_PASSWORD) {
+      document.getElementById('modalError').textContent = '❌ Incorrect password. Please try again.';
+      document.getElementById('pwdInput').value = '';
+      document.getElementById('pwdInput').focus();
+      return;
+    }
+    closeModal();
+    if (pendingView) {
+      window.open(pendingUrl, '_blank');
+    } else {
+      const a = document.createElement('a');
+      a.href = pendingUrl;
+      a.download = pendingName || pendingUrl.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
+  /* ── Branch accordion toggle ── */
+  function toggleBranch(header) {
+    header.classList.toggle('open');
+    header.nextElementSibling.classList.toggle('open');
+  }
+
+  /* ── Branch tab filter ── */
+  function filterBranch(branch, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.branch-block').forEach(block => {
+      block.style.display =
+        (branch === 'all' || block.dataset.branch === branch) ? '' : 'none';
+    });
+  }
+
+  /* ── Search filter ── */
+  function filterNotes() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    if (!q) {
+      document.querySelectorAll('.note-card').forEach(c => c.style.display = '');
+      document.querySelectorAll('.branch-block').forEach(b => b.style.display = '');
+      return;
+    }
+    document.querySelectorAll('.branch-block').forEach(block => {
+      let anyVisible = false;
+      block.querySelectorAll('.note-card').forEach(card => {
+        const match = (card.dataset.title || '').toLowerCase().includes(q);
+        card.style.display = match ? '' : 'none';
+        if (match) anyVisible = true;
+      });
+      block.style.display = anyVisible ? '' : 'none';
+      if (anyVisible) {
+        block.querySelector('.branch-header').classList.add('open');
+        block.querySelector('.branch-body').classList.add('open');
+      }
+    });
+  }
+
+  /* ── Coming soon modal ── */
+  function showComingSoon() {
+    document.getElementById('soonOverlay').classList.add('show');
+  }
+
+  /* Close modal on overlay click */
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>
