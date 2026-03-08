@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYQ – Previous Year Questions</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #2d3748;
+    }
+
+    /* ── Password overlay ── */
+    #password-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    #password-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 40px 48px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      width: 340px;
+      max-width: 95vw;
+    }
+
+    #password-box h2 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      color: #1a202c;
+    }
+
+    #password-box p {
+      font-size: 0.9rem;
+      color: #718096;
+      margin-bottom: 24px;
+    }
+
+    #password-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
+    }
+
+    #password-box input:focus { border-color: #4299e1; }
+
+    #password-box button {
+      width: 100%;
+      padding: 12px;
+      background: #4299e1;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #password-box button:hover { background: #3182ce; }
+
+    #error-msg {
+      color: #e53e3e;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* ── Main content ── */
+    #main-content { display: none; }
+
+    header {
+      background: linear-gradient(90deg, #2b6cb0, #4299e1);
+      color: #fff;
+      padding: 24px 40px;
+      text-align: center;
+    }
+
+    header h1 { font-size: 2rem; letter-spacing: 1px; }
+    header p  { font-size: 1rem; opacity: 0.85; margin-top: 6px; }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .subject-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .subject-card h2 {
+      background: #ebf8ff;
+      color: #2b6cb0;
+      padding: 16px 24px;
+      font-size: 1.2rem;
+      border-bottom: 1px solid #bee3f8;
+    }
+
+    .pdf-list {
+      list-style: none;
+      padding: 12px 0;
+    }
+
+    .pdf-list li {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      border-bottom: 1px solid #f7fafc;
+      transition: background 0.15s;
+    }
+
+    .pdf-list li:last-child { border-bottom: none; }
+    .pdf-list li:hover { background: #f7fafc; }
+
+    .pdf-icon {
+      width: 36px;
+      height: 36px;
+      background: #fc8181;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.7rem;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+
+    .pdf-name {
+      flex: 1;
+      font-size: 0.95rem;
+    }
+
+    .pdf-list a {
+      text-decoration: none;
+      color: #4299e1;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid #bee3f8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+
+    .pdf-list a:hover {
+      background: #4299e1;
+      color: #fff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.85rem;
+      color: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Password Overlay -->
+  <div id="password-overlay">
+    <div id="password-box">
+      <h2>🔒 Protected Page</h2>
+      <p>Enter the password to access PYQ resources.</p>
+      <input type="password" id="pwd-input" placeholder="Enter password" autocomplete="off" />
+      <button onclick="checkPassword()">Unlock</button>
+      <p id="error-msg">❌ Wrong password! Closing the site…</p>
+    </div>
+  </div>
+
+  <!-- Main Content (shown after correct password) -->
+  <div id="main-content">
+    <header>
+      <h1>📚 PYQ – Previous Year Questions</h1>
+      <p>Download previous year question papers for exam preparation</p>
+    </header>
+
+    <div class="container">
+
+      <div class="subject-card">
+        <h2>📝 English</h2>
+        <ul class="pdf-list">
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">English – Summer 2024</span>
+            <a href="English/Eng(S-24).pdf" target="_blank">View</a>
+          </li>
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">English – Summer 2025</span>
+            <a href="English/Eng(S-25).pdf" target="_blank">View</a>
+          </li>
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">English – Winter 2023</span>
+            <a href="English/Eng(W-23).pdf" target="_blank">View</a>
+          </li>
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">English – Winter 2024</span>
+            <a href="English/Eng(W-24).pdf" target="_blank">View</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subject-card">
+        <h2>🔢 Maths</h2>
+        <ul class="pdf-list">
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">Maths – Summer 2024</span>
+            <a href="Maths/Maths(S-24).pdf" target="_blank">View</a>
+          </li>
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">Maths – Summer 2025</span>
+            <a href="Maths/Maths(S-25).pdf" target="_blank">View</a>
+          </li>
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">Maths – Winter 2023</span>
+            <a href="Maths/Maths(W-23).pdf" target="_blank">View</a>
+          </li>
+          <li>
+            <div class="pdf-icon">PDF</div>
+            <span class="pdf-name">Maths – Winter 2024</span>
+            <a href="Maths/Maths(W-24).pdf" target="_blank">View</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <footer>PYQ Resources &copy; 2025 · All rights reserved</footer>
+  </div>
+
+  <script>
+    // Allow pressing Enter to submit
+    document.getElementById('pwd-input').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function checkPassword() {
+      var input = document.getElementById('pwd-input').value;
+      if (input === 'ankit') {
+        // Correct password – hide overlay and show content
+        document.getElementById('password-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      } else {
+        // Wrong password – show error then close the site
+        var errMsg = document.getElementById('error-msg');
+        errMsg.style.display = 'block';
+        setTimeout(function () {
+          // Attempt to close the tab (works when opened via a script/link).
+          window.close();
+          // Fallback for browsers that block window.close():
+          // wait briefly to let close() take effect, then navigate away.
+          setTimeout(function () {
+            window.location.replace('about:blank');
+          }, 300);
+        }, 1500);
+      }
+    }
+  </script>
+</body>
+</html>
